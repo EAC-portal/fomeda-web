@@ -33,7 +33,7 @@ const ProductVerificationDetailsPage = () => {
                 setLoading(true);
                 const response = await ProductService.getProductVerificationDetailsById(id!);
                 if (response) {
-                    const deafultInfo = [
+                    const defaultInfo = [
                         {
                             spec_name: "Product Name",
                             spec_desc: response.product_name,
@@ -64,9 +64,8 @@ const ProductVerificationDetailsPage = () => {
                         },
                     ]
 
-                    response.specification = [...deafultInfo, ...(response.specification ?? [])]
+                    response.specification = [...defaultInfo, ...(response.specification ?? [])]
                     setProductData(response);
-                    calculateTotalScore(form.getFieldValue("specification"))
                 }
             } catch (error) {
                 console.error(error);
@@ -75,7 +74,13 @@ const ProductVerificationDetailsPage = () => {
         }
 
         getVerificationProductDetails().then(() => setLoading(false));
-    }, [form, id]);
+    }, [id]);
+
+    useEffect(() => {
+        if (productData?.specification) {
+            calculateTotalScore(form.getFieldValue("specification"));
+        }
+    }, [form, productData]);
 
     useEffect(() => {
         const calculateStarRating = () => {
