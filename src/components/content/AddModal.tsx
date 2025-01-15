@@ -42,7 +42,9 @@ const AddModal = ({isOpen, type, title, fields, onSubmit, onCancel}: any) => {
     };
 
     const handleUploadChange = async ({fileList: newFileList}: UploadChangeParam<UploadFile>) => {
+        console.log('newFileList b4', newFileList[0]);
         setFileList(newFileList);
+        console.log('newFileList after', newFileList[0]);
         if (newFileList[0]) {
             const image = {
                 name: newFileList[0].name,
@@ -58,9 +60,8 @@ const AddModal = ({isOpen, type, title, fields, onSubmit, onCancel}: any) => {
     };
 
     const handleRemove = async (file: any) => {
-        const newFileList = fileList.filter(f => f.uid !== file.uid);
-        setFileList(newFileList);
-        form.setFieldsValue({image: newFileList});
+        setFileList([]);
+        form.resetFields(['image']);
     };
 
     const handlePreview = async (file: any) => {
